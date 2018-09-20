@@ -58,7 +58,7 @@ void j1App::AddModule(j1Module* module)
 // Called before render is available
 bool j1App::Awake()
 {
-	pugi::xml_parse_result result = doc.load_file("config.xml");
+	pugi::xml_parse_result result = doc.load_file("Game/config.xml");
 	if (result) {
 		LOG("It compiles");
 	}

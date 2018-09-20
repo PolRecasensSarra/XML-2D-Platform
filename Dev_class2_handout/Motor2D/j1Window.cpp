@@ -34,9 +34,9 @@ bool j1Window::Awake()
 		//Create window
 		Uint32 flags = SDL_WINDOW_SHOWN;
 
-		width = App->config_node.child("window").child("width").attribute("value").as_int();
-		height = App->config_node.child("window").child("height").attribute("value").as_int();
-		scale = App->config_node.child("window").child("scale").attribute("value").as_int();
+		width = App->config_node.child("window").child("width").attribute("value").as_uint();
+		height = App->config_node.child("window").child("height").attribute("value").as_uint();
+		scale = App->config_node.child("window").child("scale").attribute("value").as_uint();
 
 		if(App->config_node.child("window").child("fullscreen").attribute("value").as_bool())
 		{

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <config>
   <window>
     <fullscreen value="false"/>
@@ -10,9 +10,8 @@
     <height value="650"/>
     <scale value="1"/>
   </window>
-  
-<audio></audio>
-<input></input>
-<render></render>
-<textures></textures>
+  <audio></audio>
+  <input></input>
+  <render></render>
+  <textures></textures>
 </config>
