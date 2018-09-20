@@ -66,9 +66,11 @@ bool j1App::Awake()
 		LOG("It does not compile: %s", result.description());
 	}
 
-	read = doc.first_child().child("name");
-	LOG("%s", read.name());
-	LOG("%s", read.child_value());
+	
+	config_node = doc.child("config");
+	LOG("%s", config_node.name());
+	LOG("%s", config_node.child_value());
+	LOG("%s", config_node.child("window").child("title"));
 	// TODO 3: Load config.xml file using load_file() method from the xml_document class.
 	// If everything goes well, load the top tag inside the xml_node property
 	// created in the last TODO

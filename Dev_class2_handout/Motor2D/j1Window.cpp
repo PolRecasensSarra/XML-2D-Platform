@@ -34,31 +34,31 @@ bool j1Window::Awake()
 		//Create window
 		Uint32 flags = SDL_WINDOW_SHOWN;
 
-		width = WIDTH;
-		height = HEIGHT;
-		scale = SCALE;
+		width = App->config_node.child("window").child("width").attribute("value").as_int();
+		height = App->config_node.child("window").child("height").attribute("value").as_int();
+		scale = App->config_node.child("window").child("scale").attribute("value").as_int();
 
-		if(FULLSCREEN)
+		if(App->config_node.child("window").child("fullscreen").attribute("value").as_bool())
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
 
-		if(BORDERLESS)
+		if(App->config_node.child("window").child("borderless").attribute("value").as_bool())
 		{
 			flags |= SDL_WINDOW_BORDERLESS;
 		}
 
-		if(RESIZABLE)
+		if(App->config_node.child("window").child("resizable").attribute("value").as_bool())
 		{
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
-		if(FULLSCREEN_WINDOW)
+		if(App->config_node.child("window").child("fullscreen_window").attribute("value").as_bool())
 		{
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(App->config_node.child("window").child("title").attribute("name").value(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
 		if(window == NULL)
 		{
@@ -71,7 +71,7 @@ bool j1Window::Awake()
 			screen_surface = SDL_GetWindowSurface(window);
 
 			// TODO 4: Read the title of the app from the XML
-			
+			SetTitle(App->config_node.child("window").child("title").attribute("name").value());
 			// and set directly the window title using SetTitle()
 
 		}

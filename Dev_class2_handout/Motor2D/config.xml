@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <config>
-<name title="2DPlatform">My awesome game with XML</name>
+  <window>
+    <fullscreen value="false"/>
+    <bordless value="false"/>
+    <resizable value="true"/>
+    <fullscreen_window value="false"/>
+    <title name="2D Game"/>
+    <width value="800"/>
+    <height value="650"/>
+    <scale value="1"/>
+  </window>
+  
+<audio></audio>
+<input></input>
+<render></render>
+<textures></textures>
 </config>

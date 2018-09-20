@@ -70,7 +70,7 @@ public:
 	j1Scene*			scene;
 
 
-private:
+public:
 
 	p2List<j1Module*>	modules;
 	uint				frames;
@@ -80,7 +80,7 @@ private:
 	// a xml_document to store the while config file and
 	// a xml_node to read specific branches of the xml
 	pugi::xml_document doc;
-	pugi::xml_node read;
+	pugi::xml_node config_node;
 
 	int					argc;
 	char**				args;

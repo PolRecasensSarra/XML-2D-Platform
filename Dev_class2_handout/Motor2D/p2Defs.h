@@ -54,14 +54,15 @@ template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 // TODO 5: Improve config.xml to store all configuration variables that we have as macros
 // Use a section with the name of each module (see Module::name)
 
-#define FULLSCREEN false
-#define BORDERLESS false
-#define RESIZABLE true
-#define FULLSCREEN_WINDOW false
-#define TITLE "replaceme title"
-#define WIDTH 1024
-#define HEIGHT 768
-#define SCALE 1
+
+/*#define FULLSCREEN App->doc.child("config").child("window").child_value("fullscreen")
+#define BORDERLESS App->doc.child("config").child("window").child_value("borderless")
+#define RESIZABLE App->doc.child("config").child("window").child_value("resizable")
+#define FULLSCREEN_WINDOW App->doc.child("config").child("window").child_value("fullscreen_window")
+#define TITLE App->doc.child("config").child("window").child_value("name")
+#define WIDTH App->doc.child("config").child("window").child_value("width")
+#define HEIGHT App->doc.child("config").child("window").child_value("height")
+#define SCALE App->doc.child("config").child("window").child_value("scale")*/
 
 // Joins a path and file
 inline const char* const PATH(const char* folder, const char* file)
