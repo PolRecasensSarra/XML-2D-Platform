@@ -23,7 +23,7 @@ enum class render_order
 	left_down,
 	right_down,
 	left_up,
-	left_down,
+	right_up,
 	error
 };
 enum class map_orientation
@@ -35,11 +35,12 @@ enum class map_orientation
 	error
 };
 // TODO 1: Create a struct needed to hold the information to Map node
-struct Map {
+struct Map_info {
 	uint tilewidth = 0;
 	uint tileheight = 0;
 	uint width = 0;
 	uint height = 0;
+	float version = 0.0f;
 	render_order render = render_order::error;
 	map_orientation orientation = map_orientation::error;
 };
@@ -66,17 +67,17 @@ public:
 	// Load new map
 	bool Load(const char* path);
 
+	
 private:
-
+	bool LoadMap(const pugi::xml_node& map);
 
 public:
-
 	// TODO 1: Add your struct for map info as public for now
-
+	Map_info map_info;
 private:
 
 	pugi::xml_document	map_file;
-	pugi::xml_node		file;
+	pugi::xml_node		map_node;
 	p2SString			folder;
 	bool				map_loaded;
 };
