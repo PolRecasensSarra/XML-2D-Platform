@@ -28,6 +28,11 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
+	std::list<TileSet>::const_iterator iterator;
+	for (iterator = tile_set.begin(); iterator != tile_set.end(); ++iterator) {
+		App->render->Blit(iterator->tilesetImage, 0, 0);
+	}
+
 	if(map_loaded == false)
 		return;
 
@@ -75,7 +80,8 @@ bool j1Map::Load(const char* file_name)
 
 	// TODO 4: Create and call a private function to load a tileset
 	// remember to support more any number of tilesets!
-	
+	tile_node = map_file.child("tileset");
+	LoadTile(tile_node);
 
 	if(ret == true)
 	{
@@ -95,7 +101,65 @@ bool j1Map::LoadMap(const pugi::xml_node& map)
 	map_info.tileheight = map.attribute("tileheight").as_uint();
 	map_info.tilewidth = map.attribute("tilewidth").as_uint();
 	map_info.version = map.attribute("version").as_float();
-	//map_info.orientation
+
+	//know which render value is in the tmx
+	const char* render_order = map.attribute("renderorder").as_string();
+	if (render_order[0] == 'r')
+	{
+		if (render_order[6] == 'd')
+		{
+			map_info.render = Map_info::render_order::right_down;
+			LOG("Hem entrat aquiiiiiiiiiiiiiiiiiiiiiiii");
+		}
+		else
+			map_info.render = Map_info::render_order::right_up;
+	}
+	else if (render_order[0] == 'l')
+	{
+		if (render_order[5] == 'd')
+			map_info.render = Map_info::render_order::left_down;
+		else
+			map_info.render = Map_info::render_order::left_up;
+	}
+
+	//know which orientation value is in the tmx
+	const char* orientation = map.attribute("orientation").as_string();
+	if (orientation[0] == 'o')
+	{
+		map_info.orientation = Map_info::map_orientation::orthogonal;
+		LOG("Tots som ortogonall wiiiiiiiii");
+	}
+	else if (orientation[0] == 'h')
+	{
+		map_info.orientation = Map_info::map_orientation::hexagonal_e;
+	}
+	else if (orientation[0] == 'i')
+	{
+		if (orientation[10] == 'e')
+			map_info.orientation = Map_info::map_orientation::isometric_e;
+		else
+		map_info.orientation = Map_info::map_orientation::isometric;
+	}
+
+	return true;
+}
+
+bool j1Map::LoadTile(const pugi::xml_node& map)
+{
+	for (pugi::xml_node tileset = map_file.child("map").child("tileset"); tileset; tileset = tileset.next_sibling("tileset"))
+	{
+		TileSet newtile_set;
+		newtile_set.tilesetImage = App->tex->Load(tileset.child("image").attribute("source").as_string());
+		newtile_set.name = map.attribute("name").as_string();
+		newtile_set.firstgid = map.attribute("firstgid").as_uint();
+		newtile_set.tileheight = map.attribute("tileheight").as_uint();
+		newtile_set.tilewidth = map.attribute("tilewidth").as_uint();
+		newtile_set.margin = map.attribute("margin").as_uint();
+		newtile_set.spacing = map.attribute("spacing").as_uint();
+		newtile_set.file = map.attribute("source").as_string();
+		tile_set.push_back(newtile_set);
+	}
+
 	return true;
 }
 
