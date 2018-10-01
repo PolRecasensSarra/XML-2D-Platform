@@ -28,10 +28,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
-	std::list<Map_Layer>::const_iterator iterator;
-	for (iterator = tile_set.begin(); iterator != tile_set.end(); ++iterator) {
-		App->render->Blit(iterator->layer, 0, 0);
-	}
+	
 
 	if(map_loaded == false)
 		return;

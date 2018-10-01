@@ -11,7 +11,6 @@
 // ----------------------------------------------------
 struct Map_Layer
 {
-	SDL_Texture* layer;
 	p2SString name;
 	uint width = 0u;
 	uint height = 0u;
@@ -24,6 +23,8 @@ struct Map_Layer
 
 };
 	// TODO 6: Short function to get the value of x,y
+inline uint Get(int x, int y) const;
+
 
 
 
@@ -105,7 +106,6 @@ private:
 public:
 
 	MapData data;
-	std::list<Map_Layer> tile_set;
 
 private:
 
