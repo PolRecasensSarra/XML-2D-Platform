@@ -22,8 +22,6 @@ struct Map_Layer
 	}
 
 };
-	// TODO 6: Short function to get the value of x,y
-inline uint Get(int x, int y) const;
 
 
 
@@ -33,6 +31,7 @@ struct TileSet
 {
 	// TODO 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
 	SDL_Rect GetTileRect(int id) const;
+	
 
 	p2SString			name;
 	int					firstgid;
@@ -47,6 +46,7 @@ struct TileSet
 	int					num_tiles_height;
 	int					offset_x;
 	int					offset_y;
+
 };
 
 enum MapTypes
@@ -69,6 +69,7 @@ struct MapData
 	p2List<Map_Layer*>  map_layer;
 	// TODO 2: Add a list/array of layers to the map!
 };
+
 
 // ----------------------------------------------------
 class j1Map : public j1Module
@@ -106,7 +107,14 @@ private:
 public:
 
 	MapData data;
+	
+	// TODO 6: Short function to get the value of x,y
+	inline uint Get(int x, int y) const
+	{
+		return(y*data.width + x);
+	}
 
+	
 private:
 
 	pugi::xml_document	map_file;

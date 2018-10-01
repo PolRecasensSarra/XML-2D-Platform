@@ -34,8 +34,26 @@ void j1Map::Draw()
 		return;
 
 	// TODO 5: Prepare the loop to draw all tilesets + Blit
-	
-
+	p2List_item<Map_Layer*>* item_layer = data.map_layer.start;
+	p2List_item<TileSet*>* item_set = data.tilesets.start;
+	while (item_layer != NULL)
+	{
+		Map_Layer* layer_map = item_layer->data;
+		TileSet* tileset = item_set->data;
+		for (uint row = 0; row < layer_map->width; row++)
+		{
+			for (uint column = 0; column < layer_map->height; column++)
+			{
+				if (layer_map->data[Get(column,row)] != 0)
+				{
+					iPoint position = MapToWorld(column, row);
+					App->render->Blit(tileset->texture,position.x , position.y, &tileset->GetTileRect(layer_map->data[Get(column, row)]));
+				}
+				
+			}
+		}
+		item_layer = item_layer->next;
+	}
 		// TODO 9: Complete the draw function
 
 }
@@ -134,13 +152,10 @@ bool j1Map::Load(const char* file_name)
 		data.tilesets.add(set);
 	}
 
-	for (pugi::xml_node layers = map_file.child("data").child("layer"); layers && ret; layers = layers.next_sibling("tile"))
+	for (pugi::xml_node layers = map_file.child("map").child("layer"); layers && ret; layers = layers.next_sibling("layer"))
 	{
 		Map_Layer* layer = new Map_Layer();
-		if (ret = true)
-		{
-			ret = LoadLayer(layers, layer);
-		}
+		ret = LoadLayer(layers, layer);
 		data.map_layer.add(layer);
 	}
 	// TODO 4: Iterate all layers and load each of them
