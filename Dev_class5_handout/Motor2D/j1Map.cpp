@@ -28,10 +28,16 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
+	std::list<Map_Layer>::const_iterator iterator;
+	for (iterator = tile_set.begin(); iterator != tile_set.end(); ++iterator) {
+		App->render->Blit(iterator->layer, 0, 0);
+	}
+
 	if(map_loaded == false)
 		return;
 
 	// TODO 5: Prepare the loop to draw all tilesets + Blit
+	
 
 		// TODO 9: Complete the draw function
 
@@ -130,7 +136,16 @@ bool j1Map::Load(const char* file_name)
 
 		data.tilesets.add(set);
 	}
-	//for(pugi::xml_node )
+
+	for (pugi::xml_node layers = map_file.child("data").child("layer"); layers && ret; layers = layers.next_sibling("tile"))
+	{
+		Map_Layer* layer = new Map_Layer();
+		if (ret = true)
+		{
+			ret = LoadLayer(layers, layer);
+		}
+		data.map_layer.add(layer);
+	}
 	// TODO 4: Iterate all layers and load each of them
 	// Load layer info ----------------------------------------------
 
@@ -154,16 +169,16 @@ bool j1Map::Load(const char* file_name)
 
 		// TODO 4: Add info here about your loaded layers
 		// Adapt this vcode with your own variables
-		/*
-		p2List_item<MapLayer*>* item_layer = data.layers.start;
+		
+		p2List_item<Map_Layer*>* item_layer = data.map_layer.start;
 		while(item_layer != NULL)
 		{
-			MapLayer* l = item_layer->data;
+			Map_Layer* l = item_layer->data;
 			LOG("Layer ----");
 			LOG("name: %s", l->name.GetString());
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			item_layer = item_layer->next;
-		}*/
+		}
 	}
 
 	map_loaded = ret;

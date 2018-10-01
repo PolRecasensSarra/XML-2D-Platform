@@ -5,11 +5,13 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include <list>
 
 // TODO 1: Create a struct for the map layer
 // ----------------------------------------------------
 struct Map_Layer
 {
+	SDL_Texture* layer;
 	p2SString name;
 	uint width = 0u;
 	uint height = 0u;
@@ -103,6 +105,7 @@ private:
 public:
 
 	MapData data;
+	std::list<Map_Layer> tile_set;
 
 private:
 
