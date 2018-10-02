@@ -44,18 +44,18 @@ void j1Map::Draw()
 		{
 			for (uint column = 0; column < layer_map->height; column++)
 			{
-				if (layer_map->data[Get(column,row)] != 0)
+				if (layer_map->data[Get(row, column)] != 0)
 				{
-					iPoint position = MapToWorld(column, row);
-					App->render->Blit(tileset->texture,position.x , position.y, &tileset->GetTileRect(layer_map->data[Get(column, row)]));
+					iPoint position = MapToWorld(row, column);
+					SDL_Rect rectangle = tileset->GetTileRect(layer_map->data[Get(row, column)]);
+					App->render->Blit(tileset->texture,position.x , position.y, &rectangle);
 				}
-				
+
 			}
 		}
 		item_layer = item_layer->next;
 	}
 		// TODO 9: Complete the draw function
-
 }
 
 
@@ -152,10 +152,13 @@ bool j1Map::Load(const char* file_name)
 		data.tilesets.add(set);
 	}
 
-	for (pugi::xml_node layers = map_file.child("map").child("layer"); layers && ret; layers = layers.next_sibling("layer"))
+	for (pugi::xml_node layers = map_file.child("map").child("layer"); layers; layers = layers.next_sibling("layer"))
 	{
 		Map_Layer* layer = new Map_Layer();
-		ret = LoadLayer(layers, layer);
+		if (ret == true)
+		{
+			LoadLayer(layers, layer);
+		}
 		data.map_layer.add(layer);
 	}
 	// TODO 4: Iterate all layers and load each of them
@@ -336,7 +339,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, Map_Layer* layer)
 	memset(layer->data, 0, sizeof(uint)*layer->width*layer->height);//funció que et permet evitar fer un for per inicialitzar l'array a 0
 	for (pugi::xml_node tile = node.child("data").child("tile"); tile; tile = tile.next_sibling("tile"))
 	{
-		layer->data[i] = node.attribute("tile").as_uint();
+		layer->data[i] = tile.attribute("gid").as_uint();
 		i++;
 	}
 	return true;
