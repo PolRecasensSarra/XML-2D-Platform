@@ -7,6 +7,23 @@
 #include "j1Module.h"
 
 // ----------------------------------------------------
+struct Collision
+{
+	p2SString	name;
+	int			obj_id;
+	float		x;
+	float       y;
+	float		width;
+	float		height;
+	float*		data;
+	Collision() : data(NULL)
+	{}
+	~Collision()
+	{
+		RELEASE(data)
+	}
+};
+
 struct MapLayer
 {
 	p2SString	name;
@@ -63,6 +80,7 @@ struct MapData
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
+	p2List<Collision*>	collisions;
 };
 
 // ----------------------------------------------------
@@ -97,6 +115,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	bool LoadCollision(pugi::xml_node& coll_node, Collision* collision);
 
 public:
 

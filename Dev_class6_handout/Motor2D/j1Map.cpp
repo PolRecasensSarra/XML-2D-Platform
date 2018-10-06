@@ -192,6 +192,18 @@ bool j1Map::Load(const char* file_name)
 			data.layers.add(lay);
 	}
 
+	//Load Collision info
+	pugi::xml_node collision;
+	for (collision = map_file.child("map").child("objectgroup"); collision && ret; collision = collision.next_sibling("objectgroup"))
+	{
+		Collision* coll = new Collision();
+		ret = LoadCollision(collision, coll);
+		if (ret == true)
+		{
+			data.collisions.add(coll);
+		}
+	}
+
 	if(ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
@@ -217,6 +229,16 @@ bool j1Map::Load(const char* file_name)
 			LOG("name: %s", l->name.GetString());
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			item_layer = item_layer->next;
+		}
+
+		p2List_item<Collision*>* item_coll = data.collisions.start;
+		while (item_coll != NULL)
+		{
+			Collision* c = item_coll->data;
+			LOG("Collision ----");
+			LOG("name: %s", c->name.GetString());
+			LOG("collision width: %d collision height: %d", c->width, c->height);
+			item_coll = item_coll->next;
 		}
 	}
 
@@ -345,10 +367,41 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 			set->tex_height = h;
 		}
 
-		set->num_tiles_width = set->tex_width / set->tile_width;
-		set->num_tiles_height = set->tex_height / set->tile_height;
+		set->num_tiles_width = (set->tex_width-2*set->margin) / (set->tile_width + set->spacing);
+		set->num_tiles_height = (set->tex_height-2*set->margin) / (set->tile_height + set->spacing);
 	}
 
+	return ret;
+}
+
+bool j1Map::LoadCollision(pugi::xml_node& node, Collision* collision)
+{
+	bool ret = true;
+	collision->name = node.attribute("name").as_string();
+	collision->width = node.attribute("width").as_float();
+	collision->height = node.attribute("height").as_float();
+	collision->x = node.attribute("x").as_float();
+	collision->y = node.attribute("y").as_float();
+	pugi::xml_node coll_data = node.child("data");
+
+	if (coll_data == NULL)
+	{
+		LOG("Error parsing collision.tmx: Cannot find 'layer/data' tag.");
+		ret = false;
+		RELEASE(collision);
+	}
+	else
+	{
+		LOG("Perfect parsing of collision.tmx: Found the collisions");
+		collision->data = new float[5];
+		memset(collision->data, 0.0f, 5);
+
+		int i = 0;
+		for (pugi::xml_node colli = coll_data.child("object"); colli; colli = colli.next_sibling("object"))
+		{
+			collision->data[i++] = colli.attribute("gid").as_float(0.0f);
+		}
+	}
 	return ret;
 }
 
