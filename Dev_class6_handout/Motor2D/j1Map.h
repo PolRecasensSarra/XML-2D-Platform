@@ -20,7 +20,7 @@ struct Collision
 {
 	p2SString			name;
 	SDL_Rect			rect;
-	p2List<Object*>*	object;
+	p2List<Object*>		object;
 };
 
 struct MapLayer

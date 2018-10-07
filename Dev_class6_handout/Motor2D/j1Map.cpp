@@ -54,6 +54,17 @@ void j1Map::Draw()
 		}
 		item_layer = item_layer->next;
 	}
+	p2List_item<Object*>* object_rect = item_coll->data->object.start;
+	Collision* coll_rect = item_coll->data;
+	while (object_rect != NULL)
+	{
+		coll_rect->rect.w = object_rect->data->width;
+		coll_rect->rect.h = object_rect->data->height;
+		coll_rect->rect.x = object_rect->data->x;
+		coll_rect->rect.y = object_rect->data->y;
+		App->render->DrawQuad(coll_rect->rect, 255, 0, 0, 75);
+		object_rect = object_rect->next;
+	}
 	/*while (item_coll != NULL)
 	{
 		Collision* coll_map = item_coll->data;
@@ -251,7 +262,7 @@ bool j1Map::Load(const char* file_name)
 			//Collision* c = item_coll->data;
 			LOG("Collision ----");
 			LOG("name: %s", item_coll->data->name.GetString());
-			p2List_item<Object*>* item_obj = item_coll->data->object->start;
+			p2List_item<Object*>* item_obj = item_coll->data->object.start;
 			while (item_obj != NULL)
 			{
 				LOG("collision width: %d collision height: %d",item_obj->data->width ,item_obj->data->height);
@@ -406,28 +417,10 @@ bool j1Map::LoadCollision(pugi::xml_node& node, Collision* collision)
 		item_object->x = object_node.attribute("x").as_float();
 		item_object->y = object_node.attribute("y").as_float();
 		
-		//collision_data.object->add(item_object);
+		collision->object.add(item_object);
 		LOG("Perfect parsing of collision.tmx: Found the collisions");
 	}
-	
-	/*if (coll_data == NULL)
-	{
-		LOG("Error parsing collision.tmx: Cannot find 'layer/data' tag.");
-		ret = false;
-		RELEASE(collision);
-	}
-	else
-	{
-		LOG("Perfect parsing of collision.tmx: Found the collisions");
-		collision->object = new Object[5];
-		memset(collision->object, 0, 5);
 
-		int i = 0;
-		for (pugi::xml_node colli = coll_data.child("object"); colli; colli = colli.next_sibling("object"))
-		{
-			collision->object[++i]->obj_id = colli.attribute("id").as_float();
-		}
-	}*/
 	return ret;
 }
 
