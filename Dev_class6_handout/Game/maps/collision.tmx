@@ -778,13 +778,11 @@
   </data>
  </layer>
   <objectgroup name="Capa de Objetos 1">
-    <data>
-      <object id="2" x="0.333333" y="193" width="142" height="39.6667"/>
-      <object id="3" x="142" y="209.667" width="52" height="20"/>
-      <object id="5" x="193" y="193" width="109.333" height="45.3333"/>
-      <object id="6" x="337" y="176.667" width="45.6667" height="46.3333"/>
-      <object id="7" x="416.667" y="161" width="46" height="46"/>
-    </data>
+    <object id="2" x="0.333333" y="193" width="142" height="39.6667"/>
+    <object id="3" x="142" y="209.667" width="52" height="20"/>
+    <object id="5" x="193" y="193" width="109.333" height="45.3333"/>
+    <object id="6" x="337" y="176.667" width="45.6667" height="46.3333"/>
+    <object id="7" x="416.667" y="161" width="46" height="46"/>
   </objectgroup>
   
  

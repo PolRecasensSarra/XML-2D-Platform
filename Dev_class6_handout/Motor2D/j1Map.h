@@ -7,21 +7,20 @@
 #include "j1Module.h"
 
 // ----------------------------------------------------
-struct Collision
+struct Object
 {
-	p2SString	name;
 	int			obj_id;
 	float		x;
 	float       y;
 	float		width;
 	float		height;
-	float*		data;
-	Collision() : data(NULL)
-	{}
-	~Collision()
-	{
-		RELEASE(data)
-	}
+};
+
+struct Collision
+{
+	p2SString			name;
+	SDL_Rect			rect;
+	p2List<Object*>*	object;
 };
 
 struct MapLayer
@@ -120,6 +119,8 @@ private:
 public:
 
 	MapData data;
+	
+	
 	// TODO 6 (old): Short function to get the value of x,y
 	inline uint Get(int x, int y) const
 	{
