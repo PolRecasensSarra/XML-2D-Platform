@@ -65,18 +65,6 @@ void j1Map::Draw()
 		App->render->DrawQuad(coll_rect->rect, 255, 0, 0, 75);
 		object_rect = object_rect->next;
 	}
-	/*while (item_coll != NULL)
-	{
-		Collision* coll_map = item_coll->data;
-		for (uint rects = 0; rects < 5; rects++)
-		{
-			if (coll_map->data[rects] != NULL)
-			{
-				App->render->DrawQuad(coll_map->rect, 204, 204, 204, 255);
-			}
-		}
-		item_coll = item_coll->next;
-	}*/
 
 	// TODO 10(old): Complete the draw function
 }
