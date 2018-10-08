@@ -35,24 +35,27 @@ void j1Map::Draw()
 	p2List_item<MapLayer*>* item_layer = data.layers.start;
 	p2List_item<TileSet*>* item_set = data.tilesets.start;
 	p2List_item<Collision*>* item_coll = data.collisions.start;
-	while (item_layer != NULL)
-	{
-		MapLayer* layer_map = item_layer->data;
-		TileSet* tileset = item_set->data;
-		for (uint row = 0; row < layer_map->width; row++)
-		{
-			for (uint column = 0; column < layer_map->height; column++)
-			{
-				if (layer_map->data[Get(row, column)] != 0)
-				{
-					iPoint position = MapToWorld(row, column);
-					SDL_Rect rectangle = tileset->GetTileRect(layer_map->data[Get(row, column)]);
-					App->render->Blit(tileset->texture, position.x, position.y, &rectangle);
-				}
 
+	for (item_set; item_set != NULL; item_set = item_set->next)
+	{
+		for (item_layer = data.layers.start; item_layer != NULL; item_layer = item_layer->next)
+		{
+			MapLayer* layer_map = item_layer->data;
+			TileSet* tileset = item_set->data;
+			for (uint row = 0; row < layer_map->width; row++)
+			{
+				for (uint column = 0; column < layer_map->height; column++)
+				{
+					if (layer_map->data[Get(row, column)] != 0)
+					{
+						iPoint position = MapToWorld(row, column);
+						SDL_Rect rectangle = tileset->GetTileRect(layer_map->data[Get(row, column)]);
+						App->render->Blit(tileset->texture, position.x, position.y, &rectangle);
+					}
+
+				}
 			}
 		}
-		item_layer = item_layer->next;
 	}
 	p2List_item<Object*>* object_rect = item_coll->data->object.start;
 	Collision* coll_rect = item_coll->data;
@@ -359,34 +362,36 @@ bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
-	pugi::xml_node image = tileset_node.child("image");
+	
 
-	if(image == NULL)
+	/*if (image == NULL)
 	{
 		LOG("Error parsing tileset xml file: Cannot find 'image' tag.");
 		ret = false;
-	}
-	else
+	}*/
+
+	for (pugi::xml_node image = tileset_node.child("image"); image != NULL; image = image.next_sibling("image"))
 	{
 		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->tex_width = image.attribute("width").as_int();
 
-		if(set->tex_width <= 0)
+		if (set->tex_width <= 0)
 		{
 			set->tex_width = w;
 		}
 
 		set->tex_height = image.attribute("height").as_int();
 
-		if(set->tex_height <= 0)
+		if (set->tex_height <= 0)
 		{
 			set->tex_height = h;
 		}
 
-		set->num_tiles_width = (set->tex_width-2*set->margin) / (set->tile_width + set->spacing);
-		set->num_tiles_height = (set->tex_height-2*set->margin) / (set->tile_height + set->spacing);
+		set->num_tiles_width = (set->tex_width - 2 * set->margin) / (set->tile_width + set->spacing);
+		set->num_tiles_height = (set->tex_height - 2 * set->margin) / (set->tile_height + set->spacing);
+		LOG("PERFECT PARSING TILESET WITH PATH: %s", image.attribute("source").as_string());
 	}
 
 	return ret;
