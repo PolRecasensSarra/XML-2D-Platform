@@ -39,28 +39,7 @@ void j1Map::PropagateBFS()
 {
 	// TODO 1: If frontier queue contains elements
 	// pop the last one and calculate its 4 neighbors
-	/*p2Queue_item<iPoint>* lastFrontier = nullptr;
-	p2Queue<iPoint> aux_queue;
-	lastFrontier = frontier.start;
-	if (lastFrontier != nullptr)
-	{
-		frontier.Pop(lastFrontier->data);
-		aux_queue.Push(iPoint(lastFrontier->data.x, lastFrontier->data.y - 1));
-		aux_queue.Push(iPoint(lastFrontier->data.x + 1, lastFrontier->data.y));
-		aux_queue.Push(iPoint(lastFrontier->data.x, lastFrontier->data.y + 1));
-		aux_queue.Push(iPoint(lastFrontier->data.x - 1, lastFrontier->data.y));
-	}
-	p2Queue_item<iPoint>* queue_item = aux_queue.start;
-	while (queue_item != NULL)
-	{
-		if (visited.find(queue_item->data) == -1 && IsWalkable(queue_item->data.x, queue_item->data.y))
-		{
-			frontier.Push(queue_item->data);
-			visited.add(queue_item->data);
-		}
-		aux_queue.Pop(queue_item->data);
-		queue_item = queue_item->next;
-	}*/
+	
 	p2Queue_item<iPoint>* lastFrontier = nullptr;
 	
 	if (frontier.Count() > 0)
@@ -89,6 +68,15 @@ void j1Map::PropagateBFS()
 		frontier.Pop(lastFrontier->data);
 	}
 
+	
+	for (p2List_item<iPoint>* item_point = visited.start; item_point; item_point = item_point->next)
+	{
+		p2List_item<iPoint>* item_click = road.start;
+		if (item_point->data.x,item_point->data.y+1==item_click->data.x,item_click->data.y)
+		{
+			item_click = item_point;
+		}
+	}
 	// TODO 2: For each neighbor, if not visited, add it
 	// to the frontier queue and visited list
 }
