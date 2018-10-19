@@ -39,7 +39,7 @@ void j1Map::PropagateBFS()
 {
 	// TODO 1: If frontier queue contains elements
 	// pop the last one and calculate its 4 neighbors
-	p2Queue_item<iPoint>* lastFrontier = nullptr;
+	/*p2Queue_item<iPoint>* lastFrontier = nullptr;
 	p2Queue<iPoint> aux_queue;
 	lastFrontier = frontier.start;
 	if (lastFrontier != nullptr)
@@ -60,6 +60,33 @@ void j1Map::PropagateBFS()
 		}
 		aux_queue.Pop(queue_item->data);
 		queue_item = queue_item->next;
+	}*/
+	p2Queue_item<iPoint>* lastFrontier = nullptr;
+	
+	if (frontier.Count() > 0)
+	{
+		lastFrontier = frontier.start;
+		if (visited.find({ lastFrontier->data.x, lastFrontier->data.y - 1 }) == -1 && IsWalkable(lastFrontier->data.x, lastFrontier->data.y - 1))
+		{
+			visited.add({ lastFrontier->data.x , lastFrontier->data.y -1 });
+			frontier.Push({ lastFrontier->data.x , lastFrontier->data.y - 1 });
+		}
+		if (visited.find({ lastFrontier->data.x + 1, lastFrontier->data.y }) == -1 && IsWalkable(lastFrontier->data.x+1, lastFrontier->data.y))
+		{
+			visited.add({ lastFrontier->data.x + 1 , lastFrontier->data.y});
+			frontier.Push({ lastFrontier->data.x +1, lastFrontier->data.y});
+		}
+		if (visited.find({ lastFrontier->data.x, lastFrontier->data.y + 1 }) == -1 && IsWalkable(lastFrontier->data.x, lastFrontier->data.y + 1))
+		{
+			visited.add({ lastFrontier->data.x, lastFrontier->data.y + 1 });
+			frontier.Push({ lastFrontier->data.x, lastFrontier->data.y + 1 });
+		}
+		if (visited.find({ lastFrontier->data.x - 1, lastFrontier->data.y }) == -1 && IsWalkable(lastFrontier->data.x-1, lastFrontier->data.y))
+		{
+			visited.add({ lastFrontier->data.x - 1, lastFrontier->data.y });
+			frontier.Push({ lastFrontier->data.x - 1, lastFrontier->data.y });
+		}
+		frontier.Pop(lastFrontier->data);
 	}
 
 	// TODO 2: For each neighbor, if not visited, add it
@@ -124,11 +151,11 @@ bool j1Map::IsWalkable(int x, int y) const
 		if (item_layer->data->Get(x, y) != 26)
 		{
 			ret = true;
-
 		}
 	}
 	return ret;
 
+	return true;
 	// TODO 3: return true only if x and y are within map limits
 	// and the tile is walkable (tile id 0 in the navigation layer)
 }
