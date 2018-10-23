@@ -33,6 +33,7 @@ void j1Map::ResetBFS()
 	visited.clear();
 	frontier.Push(iPoint(19, 4));
 	visited.add(iPoint(19, 4));
+	road.add(iPoint(1,9));
 }
 
 void j1Map::PropagateBFS()
@@ -67,18 +68,33 @@ void j1Map::PropagateBFS()
 		}
 		frontier.Pop(lastFrontier->data);
 	}
+	
+	
+	
 
 	
-	for (p2List_item<iPoint>* item_point = visited.start; item_point; item_point = item_point->next)
-	{
-		p2List_item<iPoint>* item_click = road.start;
-		if (item_point->data.x,item_point->data.y+1==item_click->data.x,item_click->data.y)
-		{
-			item_click = item_point;
-		}
-	}
 	// TODO 2: For each neighbor, if not visited, add it
 	// to the frontier queue and visited list
+}
+
+void j1Map::Road()
+{
+	p2List_item<iPoint>* item_click = road.start;
+	for (p2List_item<iPoint>* item_point = visited.start; item_point; item_point = item_point->next)
+	{
+		if ((item_click->data.x, item_click->data.y - 1) == (item_point->data.x, item_point->data.y) || (item_click->data.x + 1, item_click->data.y) == (item_point->data.x, item_point->data.y) || (item_click->data.x, item_click->data.y + 1) == (item_point->data.x, item_point->data.y) || (item_click->data.x - 1, item_click->data.y) == (item_point->data.x, item_point->data.y))
+		{
+			road.add({ item_point->data.x, item_point->data.y });
+			LOG("THE PARENT'S TILE IS = %i , %i", item_point->data.x, item_point->data.y);
+		}
+	}
+
+
+	/*if ((2, 4) == (2, 3) || (2,4 ) == (5, 7))
+	{
+	LOG("THIS CONDITIONAL IS BROKEN OMGGGG!!!");
+	}*/
+
 }
 
 void j1Map::DrawBFS()
