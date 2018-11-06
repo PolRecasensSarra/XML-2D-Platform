@@ -67,7 +67,7 @@ void j1Map::PropagateDijkstra()
 	// on each cell (is already reset to 0 automatically)
 	/*while(frontier.Count()!=0)
 	{ */
-		uint new_cost = 0;
+		
 		iPoint current;
 		if (frontier.Pop(current))
 		{
@@ -78,13 +78,14 @@ void j1Map::PropagateDijkstra()
 			neighbors[3].create(current.x + 0, current.y - 1);
 			for (uint i = 0; i < 4; ++i)
 			{
-				if (MovementCost(neighbors[i].x, neighbors[i].y) > 0)
+				if (MovementCost(neighbors[i].x, neighbors[i].y) >= 0)
 				{
-					new_cost = cost_so_far[current.x][current.y] + MovementCost(neighbors[i].x, neighbors[i].y);
+					uint new_cost = cost_so_far[current.x][current.y] + MovementCost(neighbors[i].x, neighbors[i].y);
 					if (cost_so_far[neighbors[i].x][neighbors[i].y] == 0 || new_cost < cost_so_far[neighbors[i].x][neighbors[i].y])
 					{
+						visited.add(neighbors[i]);
 						cost_so_far[neighbors[i].x][neighbors[i].y] = new_cost;
-						frontier.Push(neighbors[i], 0);
+						frontier.Push(neighbors[i], new_cost);
 						breadcrumbs.add(current);
 					}
 				}
