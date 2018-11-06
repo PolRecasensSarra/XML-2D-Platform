@@ -173,32 +173,88 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 		return -1;
 	}
 	// TODO 2: Create two lists: open, close
+	
 	PathList open;
 	PathList close;
 	PathNode aux(0, origin.DistanceManhattan(destination), origin, nullptr);
 	open.list.add(aux);
+	bool DestinationFound = false;
 
-
-	while (open.list.count()>0)
-	{
-
-	}
 	// Add the origin tile to open
 	// Iterate while we have tile in the open list
+	while (open.list.count()>0 && !DestinationFound)
+	{
+		// TODO 3: Move the lowest score cell from open list to the closed list
+		p2List_item<PathNode>* lowerNode = open.GetNodeLowestScore();
+		p2List_item<PathNode>* currNode = close.list.add(lowerNode->data);
+		open.list.del(lowerNode);
+		if (currNode->data.pos == destination)
+		{
+			DestinationFound = true;
+			break;
+		}
 
-	// TODO 3: Move the lowest score cell from open list to the closed list
-	
+		// TODO 5: Fill a list of all adjancent nodes
+		PathList neighbours;
+		currNode->data.FindWalkableAdjacents(neighbours);
+
+		// TODO 6: Iterate adjancent nodes:
+		// ignore nodes in the closed list
+		// If it is NOT found, calculate its F and add it to the open list
+		// If it is already in the open list, check if it is a better path (compare G)
+		// If it is a better path, Update the parent
+
+
+		for (p2List_item<PathNode>* nodeNeigh = neighbours.list.start; nodeNeigh; nodeNeigh = nodeNeigh->next)
+		{
+			// If it is NOT found, calculate its F and add it to the open list
+
+			p2List_item<PathNode>* closeItem = (p2List_item<PathNode>*) close.Find(nodeNeigh->data.pos);
+			p2List_item<PathNode>* openItem = (p2List_item<PathNode>*) open.Find(nodeNeigh->data.pos);
+
+
+
+			if (closeItem != NULL)
+				continue;
+
+			nodeNeigh->data.CalculateF(destination);
+			if (openItem == NULL)
+			{
+				open.list.add(nodeNeigh->data);
+			}
+
+			// If it is already in the open list, check if it is a better path (compare G)
+			// If it is a better path, Update the parent
+			else if (nodeNeigh->data.g < openItem->data.g)
+			{
+				openItem->data.parent = &currNode->data;
+
+			}
+
+
+		}
+
+
+	}
+
 	// TODO 4: If we just added the destination, we are done!
 	// Backtrack to create the final path
 	// Use the Pathnode::parent and Flip() the path when you are finish
-
-	// TODO 5: Fill a list of all adjancent nodes
-
-	// TODO 6: Iterate adjancent nodes:
-	// ignore nodes in the closed list
-	// If it is NOT found, calculate its F and add it to the open list
-	// If it is already in the open list, check if it is a better path (compare G)
-	// If it is a better path, Update the parent
+	
+	if (DestinationFound)
+	{
+		last_path.Clear();
+		const p2List_item<PathNode>* backtrack = close.list.end;
+		while (backtrack != nullptr)
+		{
+			last_path.PushBack(backtrack->data.pos);
+			if (backtrack->data.parent != nullptr)
+				backtrack = close.Find(backtrack->data.parent->pos);
+			else
+				backtrack = nullptr;
+		}
+		last_path.Flip();
+	}
 
 	return -1;
 }
