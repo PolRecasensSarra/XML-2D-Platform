@@ -58,6 +58,9 @@
     <ClCompile Include="UiItem_Image.cpp">
       <Filter>Desenvolupament  ========\Modules\itemUi</Filter>
     </ClCompile>
+    <ClCompile Include="UiItem_Button.cpp">
+      <Filter>Desenvolupament  ========\Modules\itemUi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">

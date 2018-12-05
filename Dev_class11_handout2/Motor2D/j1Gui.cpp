@@ -32,11 +32,11 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 bool j1Gui::Start()
 {
 	atlas = App->tex->Load(atlas_file_name.GetString());
-	BaseFont = App->font->Load("fonts/open_sans/OpenSans-Bold");
+	BaseFont = App->font->Load("fonts/open_sans/OpenSans-Bold.ttf");
 	AddLabel({ 0,0 }, "HOLAAAAAA", { 255,255,255,255 }, BaseFont);
 	
 	SDL_Rect sec = { 485, 829, 328, 103 };
-	AddImage({ 10,10 }, atlas, &sec);
+	//AddImage({ 10,10 }, atlas, &sec);
 	return true;
 }
 
@@ -52,7 +52,7 @@ bool j1Gui::Update()
 	App->input->GetMousePosition(mousePos.x, mousePos.y);
 	for (p2List_item<itemUi*>* thisItem = ListItemUI.start; thisItem; thisItem = thisItem->next)
 	{
-		if (mousePos.x > thisItem->data->rect.x && mousePos.x<thisItem->data->rect.x + thisItem->data->rect.w && mousePos.y>thisItem->data->rect.y && mousePos.y < thisItem->data->rect.y + thisItem->data->rect.h)
+		if (mousePos.x > thisItem->data->HitBox.x && mousePos.x<thisItem->data->HitBox.x + thisItem->data->HitBox.w && mousePos.y>thisItem->data->HitBox.y && mousePos.y < thisItem->data->HitBox.y + thisItem->data->HitBox.h)
 		{
 			if (App->input->GetMouseButtonDown(1)==KEY_DOWN)
 			{

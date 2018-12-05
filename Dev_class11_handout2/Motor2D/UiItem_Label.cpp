@@ -6,17 +6,19 @@ UiItem_Label::UiItem_Label(p2Point<int> pos, p2SString text, SDL_Color color, TT
 {
 	CreateText(text.GetString(),color, font);
 	if(texture!=nullptr)
-	App->tex->GetSize(texture, (uint&)rect.w, (uint&)rect.h);
+		App->tex->GetSize(texture, (uint&)section.w, (uint&)section.h);
 	hover = true;
 
 	p2SString hoverText(text);
 	hoverText += "is Hover";
 	textureHover = App->font->Print(hoverText.GetString(), color, font);
 	App->tex->GetSize(textureHover, (uint&)rectOnHover.w, (uint&)rectOnHover.h);
+	this->font = font;
 
 }
 
 void UiItem_Label::CreateText(const char* text, SDL_Color color, TTF_Font* font)
 {
 	texture = App->font->Print(text, color, font);
+
 }
